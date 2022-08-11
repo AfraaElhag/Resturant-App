@@ -1,0 +1,56 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+ 
+</IfModule>
+
+<IfModule mod_headers.c>
+Header set Connection keep-alive
+
+# Cache-control headers
+    
+    #<filesMatch "*">
+        Header set Cache-Control "max-age=31536000, must-revalidate"
+    #</filesMatch>
+
+    <filesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|swf)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </filesMatch>
+
+    
+    <filesMatch "\.(css)$">
+        Header set Cache-Control "max-age=31536000,  must-revalidate"
+    </filesMatch>
+
+   
+    <filesMatch "\.(xml|txt)$">
+        Header set Cache-Control "max-age=31536000,  must-revalidate"
+    </filesMatch>
+
+   
+    <filesMatch "\.(html|htm)$">
+        Header set Cache-Control "max-age=31536000, must-revalidate"
+    </filesMatch>
+
+    <FilesMatch "\.(gif|jpg|png|ico|css|js|pdf|txt)$">
+        Header append Cache-Control "public"
+    </FilesMatch>
+</IfModule>
